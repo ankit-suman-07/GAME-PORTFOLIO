@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- SEO Meta Tags -->
+  <title>Ankit Suman — Game Developer & Programmer</title>
+  <meta name="description" content="Game developer specializing in Godot Engine. Explore my projects including 3D platformers, slot games, and more. Available for game dev, programming, and QA roles." />
+  <meta name="keywords" content="game developer, Godot Engine, game programmer, QA tester, indie games, 3D platformer, game portfolio" />
+  <meta name="author" content="Your Name" />
+  <meta name="robots" content="index, follow" />
+
+  <!-- Open Graph / Social -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Your Name — Game Developer & Programmer" />
+  <meta property="og:description" content="Game developer specializing in Godot Engine. Explore my projects and skills." />
+  <meta property="og:url" content="https://yourportfolio.com" />
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https://yourportfolio.com" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── CSS Variables ── */
+    :root {
+      --bg:       #06080f;
+      --bg2:      #0b0f1e;
+      --panel:    #0e1528;
+      --border:   #1a2a4a;
+      --accent:   #00ffe1;
+      --accent2:  #7b2fff;
+      --accent3:  #ff4f7b;
+      --text:     #c8d8f0;
+      --muted:    #4a6080;
+      --white:    #e8f4ff;
+      --font-hd:  'Orbitron', monospace;
+      --font-mono:'Share Tech Mono', monospace;
+      --font-body:'Rajdhani', sans-serif;
+      --glow:     0 0 12px rgba(0,255,225,0.5), 0 0 30px rgba(0,255,225,0.2);
+      --glow2:    0 0 12px rgba(123,47,255,0.5), 0 0 30px rgba(123,47,255,0.2);
+    }
+
+    /* ── Reset & Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 17px;
+      line-height: 1.7;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* ── Custom Cursor ── */
+    #cursor {
+      position: fixed; top: 0; left: 0; z-index: 9999;
+      width: 12px; height: 12px;
+      background: var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      transition: transform 0.08s, width 0.2s, height 0.2s, background 0.2s;
+      box-shadow: var(--glow);
+    }
+    #cursor-ring {
+      position: fixed; top: 0; left: 0; z-index: 9998;
+      width: 36px; height: 36px;
+      border: 1px solid rgba(0,255,225,0.4);
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      transition: transform 0.18s ease-out, width 0.3s, height 0.3s;
+    }
+    body:has(a:hover) #cursor, body:has(button:hover) #cursor {
+      width: 20px; height: 20px; background: var(--accent3);
+    }
+
+    /* ── Scanline Overlay ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 9990;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.06) 2px,
+        rgba(0,0,0,0.06) 4px
+      );
+      pointer-events: none;
+    }
+
+    /* ── Star BG ── */
+    #stars {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      overflow: hidden;
+    }
+    .star {
+      position: absolute;
+      background: #fff;
+      border-radius: 50%;
+      animation: twinkle var(--d, 3s) infinite ease-in-out alternate;
+    }
+    @keyframes twinkle { from { opacity: 0.1; } to { opacity: 0.8; } }
+
+    /* ── Grid Lines ── */
+    .grid-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background-image:
+        linear-gradient(rgba(0,255,225,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,255,225,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    /* ── Layout ── */
+    .container { max-width: 1180px; margin: 0 auto; padding: 0 2rem; }
+    section { position: relative; z-index: 1; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 1rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(6,8,15,0.7);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: var(--font-hd);
+      font-size: 1rem;
+      color: var(--accent);
+      text-decoration: none;
+      letter-spacing: 0.15em;
+    }
+    .nav-logo span { color: var(--accent3); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      transition: color 0.2s;
+      position: relative;
+    }
+    .nav-links a::before { content: '> '; color: var(--accent); opacity: 0; transition: opacity 0.2s; }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-links a:hover::before { opacity: 1; }
+    .nav-cta {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      padding: 0.5rem 1.2rem;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      transition: all 0.2s;
+      clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    }
+    .nav-cta:hover { background: var(--accent); color: var(--bg); box-shadow: var(--glow); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding-top: 80px;
+      overflow: hidden;
+    }
+    .hero-inner {
+      position: relative; z-index: 2;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 4rem; align-items: center;
+      width: 100%;
+    }
+    .hero-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--accent);
+      letter-spacing: 0.25em;
+      margin-bottom: 1rem;
+      display: flex; align-items: center; gap: 0.8rem;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 40px; height: 1px;
+      background: var(--accent);
+    }
+    h1.hero-title {
+      font-family: var(--font-hd);
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      font-weight: 900;
+      line-height: 1.05;
+      color: var(--white);
+      margin-bottom: 1rem;
+    }
+    h1.hero-title .line-accent { color: var(--accent); display: block; }
+    h1.hero-title .line-dim { color: var(--muted); font-weight: 400; font-size: 0.55em; display: block; letter-spacing: 0.2em; }
+    .hero-desc {
+      font-size: 1rem;
+      color: var(--text);
+      max-width: 440px;
+      margin-bottom: 2.5rem;
+    }
+    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-family: var(--font-mono); font-size: 0.85rem;
+      padding: 0.9rem 2rem;
+      background: var(--accent); color: var(--bg);
+      text-decoration: none; font-weight: bold;
+      letter-spacing: 0.08em;
+      clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+      transition: all 0.2s;
+    }
+    .btn-primary:hover { box-shadow: var(--glow); transform: translateY(-2px); }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-family: var(--font-mono); font-size: 0.85rem;
+      padding: 0.9rem 2rem;
+      border: 1px solid var(--accent2); color: var(--accent2);
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+      transition: all 0.2s;
+    }
+    .btn-secondary:hover { background: var(--accent2); color: #fff; box-shadow: var(--glow2); transform: translateY(-2px); }
+
+    /* Hero Visual */
+    .hero-visual {
+      position: relative;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .hero-screen {
+      width: 100%; max-width: 420px;
+      aspect-ratio: 4/3;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      position: relative; overflow: hidden;
+      box-shadow: 0 0 60px rgba(0,255,225,0.08), inset 0 0 40px rgba(0,255,225,0.04);
+    }
+    .hero-screen::before {
+      content: 'PLAYER_01';
+      position: absolute; top: 12px; left: 16px;
+      font-family: var(--font-mono); font-size: 0.65rem;
+      color: var(--accent); letter-spacing: 0.15em;
+    }
+    .hero-screen::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, transparent 40%, rgba(0,255,225,0.04) 100%);
+    }
+    .pixel-art {
+      position: absolute;
+      bottom: 0; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center;
+      gap: 0;
+    }
+    .pa-row { display: flex; }
+    .px { width: 12px; height: 12px; }
+
+    /* Floating stats */
+    .stat-badge {
+      position: absolute;
+      background: rgba(0,255,225,0.07);
+      border: 1px solid rgba(0,255,225,0.2);
+      padding: 0.6rem 1rem;
+      font-family: var(--font-mono); font-size: 0.7rem;
+      color: var(--accent);
+      backdrop-filter: blur(4px);
+      animation: float 3s ease-in-out infinite;
+    }
+    .stat-badge:nth-child(1) { top: -20px; right: -20px; animation-delay: 0s; }
+    .stat-badge:nth-child(2) { bottom: 30px; left: -30px; animation-delay: 1s; }
+    .stat-badge:nth-child(3) { top: 50%; right: -40px; animation-delay: 2s; }
+    @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+    .hero-status {
+      position: absolute; bottom: -30px; left: 0; right: 0;
+      display: flex; justify-content: center;
+      font-family: var(--font-mono); font-size: 0.65rem;
+      color: var(--muted); letter-spacing: 0.2em;
+    }
+    .status-dot {
+      display: inline-block; width: 6px; height: 6px;
+      border-radius: 50%; background: #00ff88; margin-right: 6px;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+    /* ── ABOUT ── */
+    #about {
+      padding: 8rem 0;
+      background: linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%);
+    }
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--accent);
+      letter-spacing: 0.3em;
+      margin-bottom: 0.5rem;
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1; height: 1px;
+      background: linear-gradient(90deg, var(--border), transparent);
+    }
+    h2.section-title {
+      font-family: var(--font-hd);
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      color: var(--white);
+      margin-bottom: 1.5rem;
+      font-weight: 700;
+    }
+    .about-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 4rem; align-items: start;
+    }
+    .about-text p { color: var(--text); margin-bottom: 1rem; }
+    .about-text p strong { color: var(--accent); }
+    .role-tags { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.5rem; }
+    .role-tag {
+      font-family: var(--font-mono); font-size: 0.75rem;
+      padding: 0.3rem 0.9rem;
+      border: 1px solid var(--border);
+      color: var(--accent2);
+      letter-spacing: 0.08em;
+      clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+    }
+
+    /* Skills */
+    .skills-panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      padding: 2rem;
+    }
+    .skills-panel h3 {
+      font-family: var(--font-mono); font-size: 0.75rem;
+      color: var(--accent); letter-spacing: 0.2em;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border); padding-bottom: 0.8rem;
+    }
+    .skill-item { margin-bottom: 1.2rem; }
+    .skill-top {
+      display: flex; justify-content: space-between;
+      font-family: var(--font-mono); font-size: 0.78rem;
+      color: var(--text); margin-bottom: 0.4rem;
+    }
+    .skill-top span:last-child { color: var(--accent); }
+    .skill-bar {
+      height: 4px; background: var(--border);
+      position: relative; overflow: hidden;
+    }
+    .skill-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent2), var(--accent));
+      width: 0%;
+      transition: width 1.2s cubic-bezier(0.4,0,0.2,1);
+      box-shadow: 0 0 8px rgba(0,255,225,0.6);
+    }
+
+    /* ── PROJECTS ── */
+    #projects { padding: 8rem 0; }
+    .projects-header {
+      display: flex; align-items: flex-end; justify-content: space-between;
+      margin-bottom: 3rem; flex-wrap: wrap; gap: 1rem;
+    }
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+    .project-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      position: relative; overflow: hidden;
+      transition: border-color 0.3s, transform 0.3s;
+      cursor: pointer;
+    }
+    .project-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+    .project-card:hover .card-glow { opacity: 1; }
+    .card-glow {
+      position: absolute; inset: 0; pointer-events: none;
+      background: linear-gradient(135deg, rgba(0,255,225,0.04) 0%, transparent 60%);
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .card-thumb {
+      height: 160px;
+      background: var(--bg);
+      position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .card-type {
+      position: absolute; top: 10px; right: 10px;
+      font-family: var(--font-mono); font-size: 0.65rem;
+      padding: 0.2rem 0.6rem;
+      background: rgba(0,0,0,0.7);
+      letter-spacing: 0.1em;
+    }
+    .card-type.godot { color: var(--accent); border: 1px solid rgba(0,255,225,0.3); }
+    .card-type.wip { color: var(--accent3); border: 1px solid rgba(255,79,123,0.3); }
+    .card-body { padding: 1.5rem; }
+    .card-body h3 {
+      font-family: var(--font-hd); font-size: 1rem;
+      color: var(--white); margin-bottom: 0.4rem;
+    }
+    .card-body p { font-size: 0.88rem; color: var(--muted); margin-bottom: 1.2rem; }
+    .card-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .tag {
+      font-family: var(--font-mono); font-size: 0.65rem;
+      padding: 0.15rem 0.55rem;
+      border: 1px solid var(--border); color: var(--muted);
+      letter-spacing: 0.08em;
+    }
+    .card-links {
+      display: flex; gap: 0.8rem; margin-top: 1rem;
+      padding-top: 1rem; border-top: 1px solid var(--border);
+    }
+    .card-link {
+      font-family: var(--font-mono); font-size: 0.7rem;
+      color: var(--accent2); text-decoration: none;
+      letter-spacing: 0.08em;
+      transition: color 0.2s;
+    }
+    .card-link:hover { color: var(--accent); }
+
+    /* ── PIXEL ART GAME ICONS ── */
+    canvas.game-icon { image-rendering: pixelated; }
+
+    /* ── SKILLS SECTION ── */
+    #skills { padding: 8rem 0; background: var(--bg2); }
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    .skill-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      padding: 1.8rem;
+      transition: border-color 0.3s;
+      position: relative; overflow: hidden;
+    }
+    .skill-card:hover { border-color: var(--accent2); }
+    .skill-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent2), var(--accent));
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.4s;
+    }
+    .skill-card:hover::before { transform: scaleX(1); }
+    .skill-icon {
+      font-size: 2rem; margin-bottom: 1rem;
+      display: block;
+    }
+    .skill-card h3 {
+      font-family: var(--font-hd); font-size: 0.9rem;
+      color: var(--white); margin-bottom: 0.6rem;
+    }
+    .skill-card p { font-size: 0.85rem; color: var(--muted); }
+    .skill-list {
+      margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 0.4rem;
+    }
+    .skill-list span {
+      font-family: var(--font-mono); font-size: 0.65rem;
+      color: var(--accent); letter-spacing: 0.08em;
+    }
+    .skill-list span::before { content: '# '; color: var(--muted); }
+
+    /* ── CONTACT ── */
+    #contact { padding: 8rem 0; }
+    .contact-inner {
+      max-width: 700px; margin: 0 auto; text-align: center;
+    }
+    .contact-inner p { color: var(--text); margin-bottom: 2.5rem; }
+    .contact-links {
+      display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap;
+    }
+    .contact-link {
+      display: flex; align-items: center; gap: 0.7rem;
+      font-family: var(--font-mono); font-size: 0.82rem;
+      padding: 0.9rem 1.8rem;
+      border: 1px solid var(--border);
+      color: var(--text); text-decoration: none;
+      letter-spacing: 0.08em;
+      transition: all 0.2s;
+      clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    }
+    .contact-link:hover { border-color: var(--accent); color: var(--accent); box-shadow: var(--glow); }
+    .contact-link svg { width: 18px; height: 18px; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem;
+      text-align: center;
+      font-family: var(--font-mono); font-size: 0.7rem;
+      color: var(--muted); letter-spacing: 0.1em;
+    }
+    footer span { color: var(--accent); }
+
+    /* ── GLITCH TEXT ── */
+    .glitch {
+      position: relative;
+    }
+    .glitch::before, .glitch::after {
+      content: attr(data-text);
+      position: absolute; top: 0; left: 0; right: 0;
+      color: var(--white);
+      font-family: inherit;
+    }
+    .glitch::before {
+      color: var(--accent3);
+      animation: glitch1 4s infinite;
+      clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
+    }
+    .glitch::after {
+      color: var(--accent);
+      animation: glitch2 4s infinite;
+      clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
+    }
+    @keyframes glitch1 {
+      0%,90%,100% { transform: none; opacity: 0; }
+      91% { transform: translate(-2px, 1px); opacity: 0.8; }
+      93% { transform: translate(2px, -1px); opacity: 0.6; }
+      95% { transform: none; opacity: 0; }
+    }
+    @keyframes glitch2 {
+      0%,92%,100% { transform: none; opacity: 0; }
+      93% { transform: translate(2px, 2px); opacity: 0.8; }
+      96% { transform: translate(-2px, -1px); opacity: 0.5; }
+      98% { transform: none; opacity: 0; }
+    }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .hero-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .hero-visual { display: none; }
+      .about-grid { grid-template-columns: 1fr; }
+      nav .nav-links { display: none; }
+    }
+
+    /* ── TYPED CURSOR ── */
+    .typed-cursor {
+      display: inline-block;
+      width: 2px; height: 1em;
+      background: var(--accent);
+      margin-left: 4px;
+      vertical-align: text-bottom;
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+
+    /* terminal line */
+    .terminal-line {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 0.3rem;
+    }
+    .terminal-line .prompt { color: var(--accent3); margin-right: 0.5rem; }
+    .terminal-line .cmd { color: var(--accent); }
+    .terminal-line .out { color: var(--text); }
+
+    /* HP bar style */
+    .xp-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.6rem; }
+    .xp-label { font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted); width: 110px; flex-shrink: 0; }
+    .xp-bar-wrap { flex: 1; height: 6px; background: var(--border); position: relative; overflow: hidden; }
+    .xp-bar {
+      height: 100%; width: 0%;
+      background: linear-gradient(90deg, var(--accent2), var(--accent));
+      transition: width 1.4s cubic-bezier(0.4,0,0.2,1);
+      box-shadow: 0 0 8px rgba(0,255,225,0.5);
+    }
+    .xp-val { font-family: var(--font-mono); font-size: 0.68rem; color: var(--accent); width: 36px; text-align: right; flex-shrink: 0; }
+  </style>
+</head>
+<body>
+
+  <!-- Custom Cursor -->
+  <div id="cursor"></div>
+  <div id="cursor-ring"></div>
+
+  <!-- Stars -->
+  <div id="stars" aria-hidden="true"></div>
+
+  <!-- NAV -->
+  <nav aria-label="Main navigation">
+    <a href="#hero" class="nav-logo">ankit<span>_</span>suman</a>
+    <ul class="nav-links" role="list">
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="#contact" class="nav-cta" aria-label="Hire me">HIRE_ME</a>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero" aria-label="Hero introduction">
+    <div class="grid-bg" aria-hidden="true"></div>
+    <div class="container">
+      <div class="hero-inner">
+        <div class="hero-content">
+          <div class="hero-eyebrow" aria-hidden="true">LEVEL 01 // UNLOCKED</div>
+          <h1 class="hero-title glitch" data-text="YOUR NAME">
+            ANKIT SUMAN
+            <span class="line-accent">GAME DEVELOPER</span>
+            <span class="line-dim">GODOT · PROGRAMMER · QA</span>
+          </h1>
+          <p class="hero-desc">
+            Building immersive worlds, one line of GDScript at a time. Passionate about game mechanics, clean code, and making things that feel great to play.
+          </p>
+          <div class="hero-btns">
+            <a href="#projects" class="btn-primary">▶ VIEW PROJECTS</a>
+            <a href="#contact" class="btn-secondary">◈ GET IN TOUCH</a>
+          </div>
+        </div>
+
+        <div class="hero-visual" aria-hidden="true">
+          <div class="stat-badge">⚔ GODOT 4.x</div>
+          <div class="stat-badge">◎ GAMES: 5+</div>
+          <div class="stat-badge">⚡ OPEN TO WORK</div>
+          <div class="hero-screen">
+            <canvas id="heroCanvas" width="420" height="315"></canvas>
+          </div>
+          <div class="hero-status">
+            <span class="status-dot"></span>AVAILABLE_FOR_HIRE
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" aria-labelledby="about-heading">
+    <div class="container">
+      <div class="about-grid reveal">
+        <div class="about-text">
+          <div class="section-label">// WHO_AM_I</div>
+          <h2 class="section-title" id="about-heading">About Me</h2>
+          <p>
+            Masters in <strong>Software Engineering</strong>, and an aspiring <strong>game developer</strong> with a growing passion for creating interactive experiences. Using <strong>Godot Engine</strong>, I've been building everything from casual mini-games to 3D platformers — learning something new with every project.
+          </p>
+          <p>
+            My background combines <strong>game design thinking</strong> with <strong>programming fundamentals</strong>, and I'm steadily building up experience in GDScript, game mechanics, physics, and UI systems.
+          </p>
+          <p>
+            Beyond coding, I'm also interested in <strong>QA</strong> — I enjoy breaking things, finding edge cases, and making sure games feel polished and bug-free.
+          </p>
+          <div class="role-tags" role="list">
+            <span class="role-tag" role="listitem">Game Developer</span>
+            <span class="role-tag" role="listitem">Game Programmer</span>
+            <span class="role-tag" role="listitem">QA Tester</span>
+            <span class="role-tag" role="listitem">Godot Enthusiast</span>
+          </div>
+        </div>
+
+        <div class="skills-panel">
+          <h3>// STATS.EXE</h3>
+          <div id="xp-bars" role="list" aria-label="Skill levels">
+            <div class="xp-row" role="listitem">
+              <span class="xp-label">Godot Engine</span>
+              <div class="xp-bar-wrap"><div class="xp-bar" data-val="72"></div></div>
+              <span class="xp-val">72</span>
+            </div>
+            <div class="xp-row" role="listitem">
+              <span class="xp-label">GDScript</span>
+              <div class="xp-bar-wrap"><div class="xp-bar" data-val="68"></div></div>
+              <span class="xp-val">68</span>
+            </div>
+            <div class="xp-row" role="listitem">
+              <span class="xp-label">Game Design</span>
+              <div class="xp-bar-wrap"><div class="xp-bar" data-val="60"></div></div>
+              <span class="xp-val">60</span>
+            </div>
+            <div class="xp-row" role="listitem">
+              <span class="xp-label">3D / Blender</span>
+              <div class="xp-bar-wrap"><div class="xp-bar" data-val="40"></div></div>
+              <span class="xp-val">40</span>
+            </div>
+            <div class="xp-row" role="listitem">
+              <span class="xp-label">QA Testing</span>
+              <div class="xp-bar-wrap"><div class="xp-bar" data-val="55"></div></div>
+              <span class="xp-val">55</span>
+            </div>
+            <div class="xp-row" role="listitem">
+              <span class="xp-label">Git / Version Ctrl</span>
+              <div class="xp-bar-wrap"><div class="xp-bar" data-val="50"></div></div>
+              <span class="xp-val">50</span>
+            </div>
+          </div>
+          <div style="margin-top:2rem; border-top:1px solid var(--border); padding-top:1.5rem;">
+            <div class="terminal-line"><span class="prompt">$</span><span class="cmd">status</span></div>
+            <div class="terminal-line"><span class="out">▸ Currently learning: Shader programming</span></div>
+            <div class="terminal-line"><span class="out">▸ Next goal: Finish first full Godot game</span></div>
+            <div class="terminal-line"><span class="out">▸ Status: <span style="color:#00ff88">OPEN TO OPPORTUNITIES</span></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects" aria-labelledby="projects-heading">
+    <div class="container">
+      <div class="projects-header reveal">
+        <div>
+          <div class="section-label">// GAME_VAULT</div>
+          <h2 class="section-title" id="projects-heading">Projects</h2>
+        </div>
+        <p style="font-family:var(--font-mono);font-size:0.75rem;color:var(--muted);letter-spacing:0.08em;">
+          5 PROJECTS LOADED
+        </p>
+      </div>
+      <div class="projects-grid">
+
+        <article class="project-card reveal" aria-label="3D Platformer project">
+          <div class="card-glow"></div>
+          <div class="card-thumb" style="background: linear-gradient(135deg, #0d1f3c, #0a1628);">
+            <canvas id="c-platformer" width="200" height="120" class="game-icon"></canvas>
+            <span class="card-type godot">GODOT 4</span>
+          </div>
+          <div class="card-body">
+            <h3>3D Mini Platformer</h3>
+            <p>A small 3D platformer featuring character movement, jumping mechanics, collision detection, and a basic level layout.</p>
+            <div class="card-tags">
+              <span class="tag">3D</span><span class="tag">GDScript</span><span class="tag">Physics</span><span class="tag">CharacterBody3D</span>
+            </div>
+            <div class="card-links">
+              <a href="#" class="card-link">▶ PLAY DEMO</a>
+              <a href="#" class="card-link">⌥ SOURCE CODE</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-card reveal" aria-label="Slot Machine project">
+          <div class="card-glow"></div>
+          <div class="card-thumb" style="background: linear-gradient(135deg, #1a0a2e, #0e0619);">
+            <canvas id="c-slot" width="200" height="120" class="game-icon"></canvas>
+            <span class="card-type godot">GODOT 4</span>
+          </div>
+          <div class="card-body">
+            <h3>Slot Machine Game</h3>
+            <p>A functional slot machine with animated reels, win detection logic, credit system, and satisfying visual feedback.</p>
+            <div class="card-tags">
+              <span class="tag">2D</span><span class="tag">UI</span><span class="tag">Animations</span><span class="tag">Game Logic</span>
+            </div>
+            <div class="card-links">
+              <a href="#" class="card-link">▶ PLAY DEMO</a>
+              <a href="#" class="card-link">⌥ SOURCE CODE</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-card reveal" aria-label="Rock Paper Scissors project">
+          <div class="card-glow"></div>
+          <div class="card-thumb" style="background: linear-gradient(135deg, #0a1f1a, #061510);">
+            <canvas id="c-rps" width="200" height="120" class="game-icon"></canvas>
+            <span class="card-type godot">GODOT 4</span>
+          </div>
+          <div class="card-body">
+            <h3>Rock Paper Scissors</h3>
+            <p>Classic RPS with a clean UI, score tracking, animated AI choices, and round-by-round results display.</p>
+            <div class="card-tags">
+              <span class="tag">2D</span><span class="tag">UI System</span><span class="tag">State Logic</span>
+            </div>
+            <div class="card-links">
+              <a href="#" class="card-link">▶ PLAY DEMO</a>
+              <a href="#" class="card-link">⌥ SOURCE CODE</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-card reveal" aria-label="Placeholder project">
+          <div class="card-glow"></div>
+          <div class="card-thumb" style="background: linear-gradient(135deg, #1f1008, #120a04);">
+            <canvas id="c-project4" width="200" height="120" class="game-icon"></canvas>
+            <span class="card-type wip">IN PROGRESS</span>
+          </div>
+          <div class="card-body">
+            <h3>Add Your Next Game</h3>
+            <p>Description of your upcoming project. What mechanics are you experimenting with? What makes it fun?</p>
+            <div class="card-tags">
+              <span class="tag">TBD</span><span class="tag">Godot 4</span>
+            </div>
+            <div class="card-links">
+              <a href="#" class="card-link">◈ DEVLOG</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-card reveal" aria-label="Add more projects">
+          <div class="card-glow"></div>
+          <div class="card-thumb" style="background: var(--bg); display:flex; align-items:center; justify-content:center; flex-direction:column; gap:.5rem;">
+            <span style="font-family:var(--font-hd);font-size:2.5rem;color:var(--border);">+</span>
+            <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--muted);letter-spacing:.15em;">MORE COMING SOON</span>
+          </div>
+          <div class="card-body">
+            <h3>Future Project</h3>
+            <p>Keep building. Every game you finish teaches you something the next one will benefit from.</p>
+            <div class="card-tags">
+              <span class="tag">Upcoming</span>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills" aria-labelledby="skills-heading">
+    <div class="container">
+      <div class="reveal">
+        <div class="section-label">// TECH_STACK</div>
+        <h2 class="section-title" id="skills-heading">Skills & Tools</h2>
+      </div>
+      <div class="skills-grid">
+
+        <div class="skill-card reveal">
+          <span class="skill-icon">🎮</span>
+          <h3>Godot Engine</h3>
+          <p>Primary game engine. Comfortable with scenes, nodes, signals, physics, and the Godot editor workflow.</p>
+          <div class="skill-list">
+            <span>GDScript</span>
+            <span>Scenes</span>
+            <span>Signals</span>
+            <span>Physics</span>
+            <span>AnimationPlayer</span>
+          </div>
+        </div>
+
+        <div class="skill-card reveal">
+          <span class="skill-icon">📐</span>
+          <h3>Game Design</h3>
+          <p>Understanding of core loops, game feel, UI/UX, balancing, and player experience fundamentals.</p>
+          <div class="skill-list">
+            <span>Core Loops</span>
+            <span>Prototyping</span>
+            <span>Playtesting</span>
+            <span>UI/UX</span>
+          </div>
+        </div>
+
+        <div class="skill-card reveal">
+          <span class="skill-icon">🧪</span>
+          <h3>QA & Testing</h3>
+          <p>Bug reporting, test case writing, edge case hunting, and systematic playtesting methodologies.</p>
+          <div class="skill-list">
+            <span>Bug Reports</span>
+            <span>Test Cases</span>
+            <span>Edge Cases</span>
+            <span>Regression</span>
+          </div>
+        </div>
+
+        <div class="skill-card reveal">
+          <span class="skill-icon">💾</span>
+          <h3>Programming</h3>
+          <p>Core programming knowledge — variables, functions, OOP basics, state machines, and clean code habits.</p>
+          <div class="skill-list">
+            <span>GDScript</span>
+            <span>OOP</span>
+            <span>State Machines</span>
+            <span>Git</span>
+          </div>
+        </div>
+
+        <div class="skill-card reveal">
+          <span class="skill-icon">🖼</span>
+          <h3>2D / 3D Art</h3>
+          <p>Basic 3D modeling, pixel art creation, sprite sheets, and understanding of visual game asset pipelines.</p>
+          <div class="skill-list">
+            <span>Pixel Art</span>
+            <span>Blender (basics)</span>
+            <span>Sprites</span>
+            <span>Tilemaps</span>
+          </div>
+        </div>
+
+        <div class="skill-card reveal">
+          <span class="skill-icon">🔧</span>
+          <h3>Tools & Workflow</h3>
+          <p>Version control, project organization, and the developer habits that make projects maintainable.</p>
+          <div class="skill-list">
+            <span>Git</span>
+            <span>GitHub</span>
+            <span>VS Code</span>
+            <span>itch.io</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" aria-labelledby="contact-heading">
+    <div class="container">
+      <div class="contact-inner reveal">
+        <div class="section-label" style="justify-content:center;">// MAKE_CONTACT</div>
+        <h2 class="section-title" id="contact-heading" style="font-size:2.4rem;">Let's Build Something</h2>
+        <p>
+          I'm actively looking for opportunities in game development, game programming, or QA roles. Whether you have a project, a team, or just want to talk games — my inbox is open.
+        </p>
+        <div class="contact-links">
+          <a href="mailto:ankitsuman07@gmail.com" class="contact-link" aria-label="Send email">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>
+            EMAIL_ME
+          </a>
+          <a href="https://github.com/ankit-suman-07" class="contact-link" target="_blank" rel="noopener noreferrer" aria-label="Visit GitHub profile">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.49.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.1-1.47-1.1-1.47-.9-.62.07-.6.07-.6 1 .07 1.52 1.02 1.52 1.02.89 1.52 2.33 1.08 2.9.83.09-.65.35-1.08.63-1.33-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.02-2.68-.1-.25-.44-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.56 9.56 0 0 1 12 6.8c.85.004 1.7.115 2.5.337 1.9-1.29 2.74-1.02 2.74-1.02.54 1.37.2 2.39.1 2.64.63.7 1.02 1.59 1.02 2.68 0 3.84-2.34 4.69-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10.01 10.01 0 0 0 22 12c0-5.52-4.48-10-10-10z"/></svg>
+            GITHUB
+          </a>
+          <a href="https://www.linkedin.com/in/ankit--suman/" class="contact-link" target="_blank" rel="noopener noreferrer" aria-label="Visit LinkedIn profile">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.37V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.59 0 4.26 2.36 4.26 5.44v6.3zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zm1.78 13.02H3.56V9h3.56v11.45zM22.23 2H1.77C.79 2 0 2.77 0 3.73v16.54C0 21.23.8 22 1.77 22h20.46C23.2 22 24 21.23 24 20.27V3.73C24 2.77 23.2 2 22.23 2z"/></svg>
+            LINKEDIN
+          </a>
+          <a href="https://yourname.itch.io" class="contact-link" target="_blank" rel="noopener noreferrer" aria-label="Visit itch.io page">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3.13 1.27C2.08 1.91 0 4.15 0 4.6v1.08c0 1.37 1.28 2.56 2.45 2.56 1.41 0 2.57-1.16 2.57-2.56 0 1.4 1.12 2.56 2.53 2.56 1.4 0 2.5-1.16 2.5-2.56 0 1.4 1.2 2.56 2.6 2.56h.06c1.4 0 2.6-1.16 2.6-2.56 0 1.4 1.1 2.56 2.5 2.56 1.41 0 2.53-1.16 2.53-2.56 0 1.4 1.16 2.56 2.57 2.56C23.72 8.24 25 7.05 25 5.68V4.6c0-.45-2.08-2.69-3.13-3.33C20.1.53 12 .44 3.13 1.27zM8.5 9.71v.01c-.26.14-.5.26-.77.35-.89.28-1.87.18-2.73-.26v5.99H5c0 1.57 3.5 4.2 7 4.2s7-2.63 7-4.2h-.01V9.81c-.86.44-1.84.54-2.73.26-.27-.09-.51-.21-.77-.35-.7.42-1.54.65-2.42.65-.9 0-1.73-.23-2.43-.66h-.14z"/></svg>
+            ITCH.IO
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>ANKITSUMAN07@GMAIL.COM // <span>2026</span> // POWERED BY <span>GODOT & CAFFEINE</span></p>
+  </footer>
+
+  <script>
+    // ── Custom Cursor ──
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursor-ring');
+    document.addEventListener('mousemove', e => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
+      setTimeout(() => {
+        ring.style.left = e.clientX + 'px';
+        ring.style.top = e.clientY + 'px';
+      }, 80);
+    });
+
+    // ── Stars ──
+    const starsEl = document.getElementById('stars');
+    for (let i = 0; i < 120; i++) {
+      const s = document.createElement('div');
+      s.className = 'star';
+      const size = Math.random() * 2 + 0.5;
+      s.style.cssText = `
+        width:${size}px; height:${size}px;
+        left:${Math.random()*100}%; top:${Math.random()*100}%;
+        --d:${(Math.random()*3+2).toFixed(1)}s;
+        animation-delay:${(Math.random()*3).toFixed(1)}s;
+        opacity:${Math.random()*0.5+0.1};
+      `;
+      starsEl.appendChild(s);
+    }
+
+    // ── Scroll Reveal ──
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 60);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    revealEls.forEach(el => observer.observe(el));
+
+    // ── XP Bars ──
+    const xpObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.querySelectorAll('.xp-bar').forEach(bar => {
+            const val = bar.dataset.val;
+            bar.style.width = val + '%';
+          });
+          xpObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+    const xpSection = document.getElementById('xp-bars');
+    if (xpSection) xpObserver.observe(xpSection);
+
+    // ── Hero Canvas: Pixel Art Character + Scene ──
+    (function() {
+      const canvas = document.getElementById('heroCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const W = canvas.width, H = canvas.height;
+      let frame = 0;
+
+      // color palette
+      const C = {
+        sky: '#06080f', ground: '#0e1528', groundLine: '#00ffe1',
+        char1: '#00ffe1', char2: '#7b2fff', char3: '#ff4f7b',
+        star: '#c8d8f0', platform: '#1a2a4a'
+      };
+
+      // Character pixel map (12x16 pixels, 4px each)
+      const charFrames = [
+        // frame 0 - standing
+        [
+          '....CCCC....',
+          '...CCCCCC...',
+          '...CPPCCP...',
+          '...CCCCCC...',
+          '....CCCC....',
+          '...CCCCCC...',
+          '..CCCCCCCC..',
+          '..CC.CC.CC..',
+          '...CC..CC...',
+          '...CC..CC...',
+        ],
+        // frame 1 - jump
+        [
+          '....CCCC....',
+          '...CCCCCC...',
+          '...CPPCCP...',
+          '...CCCCCC...',
+          '....CCCC....',
+          '..CCCCCCCC..',
+          '.CC.CCCC.CC.',
+          '..CCCCCCCC..',
+          '...CC..CC...',
+          '..CC....CC..',
+        ]
+      ];
+
+      const stars = Array.from({length: 30}, () => ({
+        x: Math.random() * W, y: Math.random() * H * 0.6,
+        r: Math.random() * 1.5 + 0.3,
+        t: Math.random() * Math.PI * 2
+      }));
+
+      const platforms = [
+        { x: 60, y: 200, w: 80 },
+        { x: 200, y: 160, w: 70 },
+        { x: 310, y: 220, w: 80 },
+      ];
+
+      let charX = 30, charY = 250, vy = 0, onGround = false, dir = 1;
+      let charFrameIdx = 0, frameTimer = 0;
+
+      function drawPixelChar(cx, cy, fi) {
+        const px = 5;
+        const map = charFrames[fi % charFrames.length];
+        map.forEach((row, ry) => {
+          [...row].forEach((c, rx) => {
+            if (c === 'C') {
+              ctx.fillStyle = C.char1;
+              ctx.fillRect(cx + (rx - 6) * px, cy + ry * px, px, px);
+            } else if (c === 'P') {
+              ctx.fillStyle = C.char3;
+              ctx.fillRect(cx + (rx - 6) * px, cy + ry * px, px, px);
+            }
+          });
+        });
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, W, H);
+
+        // Sky
+        ctx.fillStyle = C.sky;
+        ctx.fillRect(0, 0, W, H);
+
+        // Grid
+        ctx.strokeStyle = 'rgba(0,255,225,0.04)';
+        ctx.lineWidth = 1;
+        for (let x = 0; x < W; x += 30) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
+        for (let y = 0; y < H; y += 30) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
+
+        // Stars
+        frame++;
+        stars.forEach(s => {
+          s.t += 0.02;
+          const alpha = 0.3 + 0.5 * Math.sin(s.t);
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(200, 216, 240, ${alpha})`;
+          ctx.fill();
+        });
+
+        // Platforms
+        platforms.forEach(p => {
+          ctx.fillStyle = C.platform;
+          ctx.fillRect(p.x, p.y, p.w, 8);
+          ctx.fillStyle = C.groundLine;
+          ctx.fillRect(p.x, p.y, p.w, 2);
+        });
+
+        // Ground
+        ctx.fillStyle = C.platform;
+        ctx.fillRect(0, 272, W, 44);
+        ctx.fillStyle = C.groundLine;
+        ctx.fillRect(0, 272, W, 2);
+
+        // Physics
+        vy += 0.6;
+        charX += dir * 1.2;
+        charY += vy;
+
+        // Ground check
+        if (charY >= 248) { charY = 248; vy = -8; onGround = true; }
+
+        // Platform checks
+        platforms.forEach(p => {
+          if (charX + 15 > p.x && charX - 15 < p.x + p.w && charY + 50 >= p.y && charY + 50 <= p.y + 12 && vy > 0) {
+            charY = p.y - 50;
+            vy = -9;
+          }
+        });
+
+        if (charX > W + 20) charX = -20;
+        if (charX < -20) charX = W + 20;
+
+        // Char frame
+        frameTimer++;
+        if (frameTimer > 10) { charFrameIdx = (charFrameIdx + 1) % 2; frameTimer = 0; }
+
+        drawPixelChar(charX, charY, onGround ? 0 : 1);
+
+        // Overlay
+        ctx.fillStyle = 'rgba(0,255,225,0.06)';
+        ctx.fillRect(0, 0, W, 24);
+        ctx.fillStyle = 'rgba(0,255,225,0.7)';
+        ctx.font = '9px "Share Tech Mono"';
+        ctx.fillText('STAGE_01  ♥♥♥  SCORE: ' + (frame * 10), 10, 16);
+
+        requestAnimationFrame(draw);
+      }
+      draw();
+    })();
+
+    // ── Project Card Icons ──
+    function drawSlot(id) {
+      const c = document.getElementById(id);
+      if (!c) return;
+      const ctx = c.getContext('2d');
+      const W = c.width, H = c.height;
+      const symbols = ['7', '♦', '★', '♠'];
+      ctx.fillStyle = '#1a0a2e';
+      ctx.fillRect(0, 0, W, H);
+      // reel boxes
+      [50, 90, 130].forEach((x, i) => {
+        ctx.strokeStyle = 'rgba(0,255,225,0.3)';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(x, 25, 30, 70);
+        ctx.fillStyle = i === 0 ? '#ff4f7b' : i === 1 ? '#00ffe1' : '#7b2fff';
+        ctx.font = 'bold 22px serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(symbols[i], x + 15, 68);
+      });
+      ctx.fillStyle = 'rgba(0,255,225,0.6)';
+      ctx.fillRect(40, 55, 120, 2);
+      ctx.fillStyle = '#00ffe1';
+      ctx.font = '8px "Share Tech Mono"';
+      ctx.textAlign = 'center';
+      ctx.fillText('INSERT COIN', W/2, H - 10);
+    }
+
+    function drawRPS(id) {
+      const c = document.getElementById(id);
+      if (!c) return;
+      const ctx = c.getContext('2d');
+      const W = c.width, H = c.height;
+      ctx.fillStyle = '#0a1f1a';
+      ctx.fillRect(0, 0, W, H);
+      const items = [['✊',60,'#00ffe1'],['✋',100,'#7b2fff'],['✌️',140,'#ff4f7b']];
+      items.forEach(([sym, x, col]) => {
+        ctx.fillStyle = col;
+        ctx.font = '32px serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(sym, x, H/2 + 12);
+      });
+      ctx.fillStyle = 'rgba(0,255,225,0.5)';
+      ctx.font = '8px "Share Tech Mono"';
+      ctx.textAlign = 'center';
+      ctx.fillText('VS COMPUTER', W/2, H - 10);
+    }
+
+    function drawPlatformer(id) {
+      const c = document.getElementById(id);
+      if (!c) return;
+      const ctx = c.getContext('2d');
+      const W = c.width, H = c.height;
+      ctx.fillStyle = '#0d1f3c';
+      ctx.fillRect(0, 0, W, H);
+      // ground
+      ctx.fillStyle = '#1a2a4a';
+      ctx.fillRect(0, H - 20, W, 20);
+      ctx.fillStyle = '#00ffe1';
+      ctx.fillRect(0, H - 20, W, 2);
+      // platforms
+      [[30, 70, 50], [110, 55, 50], [155, 75, 40]].forEach(([x,y,w]) => {
+        ctx.fillStyle = '#1a2a4a';
+        ctx.fillRect(x, y, w, 8);
+        ctx.fillStyle = '#7b2fff';
+        ctx.fillRect(x, y, w, 2);
+      });
+      // char
+      ctx.fillStyle = '#00ffe1';
+      ctx.fillRect(40, 56, 10, 14);
+      ctx.fillStyle = '#ff4f7b';
+      ctx.fillRect(42, 54, 6, 6);
+      // text
+      ctx.fillStyle = 'rgba(0,255,225,0.5)';
+      ctx.font = '7px "Share Tech Mono"';
+      ctx.textAlign = 'center';
+      ctx.fillText('3D WORLD', W/2, H - 6);
+    }
+
+    function drawProject4(id) {
+      const c = document.getElementById(id);
+      if (!c) return;
+      const ctx = c.getContext('2d');
+      const W = c.width, H = c.height;
+      ctx.fillStyle = '#1f1008';
+      ctx.fillRect(0, 0, W, H);
+      ctx.strokeStyle = 'rgba(255,79,123,0.2)';
+      ctx.lineWidth = 1;
+      for (let i = 0; i < 6; i++) {
+        ctx.beginPath();
+        ctx.arc(W/2, H/2, 10 + i * 12, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+      ctx.fillStyle = '#ff4f7b';
+      ctx.font = '9px "Share Tech Mono"';
+      ctx.textAlign = 'center';
+      ctx.fillText('IN PROGRESS', W/2, H/2 + 4);
+    }
+
+    drawPlatformer('c-platformer');
+    drawSlot('c-slot');
+    drawRPS('c-rps');
+    drawProject4('c-project4');
+  </script>
+</body>
+</html>
